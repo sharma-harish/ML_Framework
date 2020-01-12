@@ -23,6 +23,7 @@ if __name__ == '__main__':
 
     for fold, (train_idx, val_idx) in enumerate(kf.split(X = df, y=df.target.values)):
         print(len(train_idx), len(val_idx))
+        
         #for each loop, the 'kfold' column of records in validation set will be set equal to fold variable, hence will help us create multiple sets. 
         df.loc[val_idx, 'kfolds'] = fold
         
