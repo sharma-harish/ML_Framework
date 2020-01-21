@@ -10,7 +10,6 @@ print(TRAINING_DATA)
 if __name__ == '__main__':
     df = pd.read_csv(TRAINING_DATA)
     df['kfolds'] = -1
-    df = df.drop(['day', 'month', 'id'], axis = 1)
 
     #Dropping all rows that have more than 2 empty columns
     df.dropna(thresh=22, inplace=True)
