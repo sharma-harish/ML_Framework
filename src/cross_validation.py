@@ -48,6 +48,7 @@ class CrossValidation:
                 for fold, (train_idx, val_idx) in enumerate(kf.split(X = self.dataframe, y=self.dataframe[target].values)):
                     self.dataframe.loc[val_idx, 'kfolds'] = fold
         
+        # distribution part to be implemented.
         elif self.problem_type in ['single_col_regression', 'multi_col_regression']:
             if self.num_targets != 1 and self.problem_type == 'single_col_regression':
                 raise Exception('Invalid Number of targets for this type')
@@ -63,7 +64,17 @@ class CrossValidation:
             self.dataframe.loc[:len(self.dataframe) - num_holdout_samples, 'kfolds'] = 0
             self.dataframe.loc[len(self.dataframe) - num_holdout_samples:, 'kfolds'] = 1
         
-        elif self.problem_type == 'multilabel_classification'
+        elif self.problem_type == 'multilabel_classification':
+            if self.num_targets != 1:
+                raise Exception('Invalid number of targets.')
+            targets = self.dataframe[self.target_cols[0].apply(lambda x: len(str(x).split(self.multilabel_delimiter)))
+            kf = model_selection.StratifiedKFold(n_splits=self.folds, 
+                                                    shuffle=self.shuffle)
+            for fold, (train_idx, val_idx) in enumerate(kf.split(X = self.dataframe, y=targets)):
+                self.dataframe.loc[val_idx, 'kfolds'] = fold
+        
+        else:
+            raise Exception('Invalid problem type.');
         '''
         The type of data:
 
